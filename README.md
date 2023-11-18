@@ -14,7 +14,7 @@
     </tr>
 </table>
 
-# Pengaturan Config
+## Pengaturan Config
 
 Dikarenakan node yang akan digunakan mempunyai aturan seperti berikut:
 
@@ -89,10 +89,10 @@ iface eth0 inet dhcp
 ```
 
 
-# Soal 0
-## Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta untuk melakukan register domain berupa riegel.canyon.yyy.com untuk worker Laravel dan granz.channel.yyy.com untuk worker PHP (0) mengarah pada worker yang memiliki IP [prefix IP].x.1.
+## Soal 0
+### Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta untuk melakukan register domain berupa riegel.canyon.yyy.com untuk worker Laravel dan granz.channel.yyy.com untuk worker PHP (0) mengarah pada worker yang memiliki IP [prefix IP].x.1.
 
-### Jawaban
+#### Jawaban
 Jadi di soal ini disuruh bikin domain riegel.canyon.yyy.com untuk worker Laravel dan granz.channel.yyy.com untuk worker PHP, sehingga yang dilakukan adalah melakukan instalasi dependencies pada .bashrc dan menginisiasi domain dan mengarahkan pada node yang diinginkan.
 
 1. Instalasi dependencies yang dibutuhkan
