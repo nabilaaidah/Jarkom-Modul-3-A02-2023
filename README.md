@@ -303,9 +303,11 @@ service isc-dhcp-relay start
 Hasil:
 
 1. IP dhcp pada client dengan switch 3
+   
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/5560ce74-4d7a-47be-b45d-8beb2687eefa)
 
 2. IP dhcp pada client dengan switch 4
+   
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/74ee465b-aa89-44ce-af6b-76fea822095b)
 
 
