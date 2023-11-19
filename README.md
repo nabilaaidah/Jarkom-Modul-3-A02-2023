@@ -209,19 +209,19 @@ service bind9 start
 ```
 
 ## Soal 1
-### Lakukan konfigurasi sesuai dengan peta yang sudah diberikan.
+> Lakukan konfigurasi sesuai dengan peta yang sudah diberikan.
 
 #### Jawaban
 Konfigurasi dilakukan dengan membentuk topologi seperti yang dicontohkan dan mengatur config per nodenya. Jawaban dari nomor ini telah ditulis pada awal lapres.
 
 
 ## Soal 2 & 3 & 4 & 5
-### Kemudian, karena masih banyak spell yang harus dikumpulkan, bantulah para petualang untuk memenuhi kriteria berikut.:
-#### a. Semua CLIENT harus menggunakan konfigurasi dari DHCP Server.
-#### b. Client yang melalui Switch3 mendapatkan range IP dari [prefix IP].3.16 - [prefix IP].3.32 dan [prefix IP].3.64 - [prefix IP].3.80
-#### c. Client yang melalui Switch4 mendapatkan range IP dari [prefix IP].4.12 - [prefix IP].4.20 dan [prefix IP].4.160 - [prefix IP].4.168 (3)
-#### d. Client mendapatkan DNS dari Heiter dan dapat terhubung dengan internet melalui DNS tersebut (4)
-#### e. Lama waktu DHCP server meminjamkan alamat IP kepada Client yang melalui Switch3 selama 3 menit sedangkan pada client yang melalui Switch4 selama 12 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 96 menit (5)
+> Kemudian, karena masih banyak spell yang harus dikumpulkan, bantulah para petualang untuk memenuhi kriteria berikut.:
+>  a. Semua CLIENT harus menggunakan konfigurasi dari DHCP Server.
+>  b. Client yang melalui Switch3 mendapatkan range IP dari [prefix IP].3.16 - [prefix IP].3.32 dan [prefix IP].3.64 - [prefix IP].3.80
+>  c. Client yang melalui Switch4 mendapatkan range IP dari [prefix IP].4.12 - [prefix IP].4.20 dan [prefix IP].4.160 - [prefix IP].4.168 (3)
+>  d. Client mendapatkan DNS dari Heiter dan dapat terhubung dengan internet melalui DNS tersebut (4)
+>  e. Lama waktu DHCP server meminjamkan alamat IP kepada Client yang melalui Switch3 selama 3 menit sedangkan pada client yang melalui Switch4 selama 12 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 96 menit (5)
 
 #### Jawaban
 a. Semua client menggunakan konfigurasi dari DHCP Server dengan cara konfigurasi per nodenya didefinisikan dengan berikut:
@@ -313,7 +313,7 @@ Hasil:
 
 
 ## Soal 6
-### Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
+> Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
 
 #### Jawaban
 1. Melakukan instalasi dependencies yang dibutuhkan pada PHP worker
@@ -374,11 +374,11 @@ Hasil:
 
 
 ## Soal 7
-### Kepala suku dari Bredt Region memberikan resource server sebagai berikut:
-#### a. Lawine, 4GB, 2vCPU, dan 80 GB SSD.
-#### b. Linie, 2GB, 2vCPU, dan 50 GB SSD.
-#### c. Lugner 1GB, 1vCPU, dan 25 GB SSD.
-#### aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second
+> Kepala suku dari Bredt Region memberikan resource server sebagai berikut:
+>  a. Lawine, 4GB, 2vCPU, dan 80 GB SSD.
+>  b. Linie, 2GB, 2vCPU, dan 50 GB SSD.
+>  c. Lugner 1GB, 1vCPU, dan 25 GB SSD.
+>  aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second
 
 #### Jawaban
 Dikarenakan pada soal ini, terdapat informasi mengenai memori ataupun cpu pada setiap workernya. Maka, algoritma yang baik dalam melakukan request testing adalah round robin weighted, dengan setiap nodenya akan memiliki weight yang berbeda tergantung dengan informasi perfomance featurenya. Dikarenakan untuk menjalankan algoritma round robin memerlukan load balancer, maka diperlukan instalasi dependencies pada load balancer
@@ -434,11 +434,11 @@ Berikut merupakan hasil dari jumlah request yang diterima oleh setiap worker:
 
 
 ## Soal 8
-### Karena diminta untuk menuliskan grimoire, buatlah analisis hasil testing dengan 200 request dan 10 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
-#### a. Nama Algoritma Load Balancer
-#### b. Report hasil testing pada Apache Benchmark
-#### c. Grafik request per second untuk masing masing algoritma. 
-#### d. Analisis 
+> Karena diminta untuk menuliskan grimoire, buatlah analisis hasil testing dengan 200 request dan 10 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+>  a. Nama Algoritma Load Balancer
+>  b. Report hasil testing pada Apache Benchmark
+>  c. Grafik request per second untuk masing masing algoritma.
+>  d. Analisis 
 
 #### Jawaban
 a. Round Robin
@@ -511,7 +511,7 @@ Berikut merupakan grafik perbandingan dari 5 algoritma tersebut:
 
 
 ## Soal 9
-### Dengan menggunakan algoritma Round Robin, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 100 request dengan 10 request/second, kemudian tambahkan grafiknya pada grimoire.
+> Dengan menggunakan algoritma Round Robin, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 100 request dengan 10 request/second, kemudian tambahkan grafiknya pada grimoire.
 
 #### Jawaban
 Berikut merupakan code algoritma round robin:
@@ -570,7 +570,7 @@ Berikut merupakan grafik perbandingan dari semua code dengan jumlah workernya ma
 
 
 ## Soal 10
-### Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/
+> Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/
 
 #### Jawaban
 Untuk menambahkan konfigurasi autentikasi, maka perlu dijalankan command berikut dalam load balancer
@@ -626,7 +626,7 @@ Hasilnya adalah sebagai berikut:
 
 
 ## Soal 11
-### Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman https://www.its.ac.id.
+> Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman https://www.its.ac.id.
 
 #### Jawaban
 Tambahkan code berikut pada soal no. 10:
@@ -650,7 +650,7 @@ Hasil:
 
 
 ## Soal 12
-### Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168.
+> Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168.
 
 #### Jawaban
 Code berikut digunakan untuk memberikan batasan dengan IP apa saja client dapat mengakses
@@ -677,7 +677,7 @@ Hasil jika diakses oleh IP yang tidak didefinisikan dalam soal:
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/b0767954-25fd-4135-a27a-413ac63dc6bf)
 
 ## Soal 13
-### Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern
+> Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern
 
 #### Jawaban
 ##### Pada Denken
@@ -738,7 +738,7 @@ Hasil jika diakses oleh IP yang diberikan akses:
 
 
 ## Soal 14
-### Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
+> Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
 
 #### Jawaban
 
@@ -835,10 +835,10 @@ VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
 
 ## Soal 15 & 16 & 17
-### Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire.
-#### a. POST /auth/register (15)
-#### b. POST /auth/login (16)
-#### c. GET /me (17)
+> Riegel Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada grimoire.
+>  a. POST /auth/register (15)
+>  b. POST /auth/login (16)
+>  c. GET /me (17)
 
 #### Jawaban
 
@@ -962,7 +962,7 @@ Hasil:
 
 
 ## Soal 18
-### Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
+> Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
 
 #### Jawaban
 Pada soal ini, diperintahkan untuk menggunakan Proxy Bind pada Eisen dalam mengaitkan IP Worker Laravel dengan IP Load Balancer, sehingga ditambahkan code ini:
@@ -993,12 +993,12 @@ Hasil dapat dilihat pada client dengan command `lynx http://[ip lb]/[nama node w
 
 
 ## Soal 19
-### Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
-#### - pm.max_children
-#### - pm.start_servers
-#### - pm.min_spare_servers
-#### - pm.max_spare_servers
-### sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
+> Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan
+>  - pm.max_children
+>  - pm.start_servers
+>  - pm.min_spare_servers
+>  - pm.max_spare_servers
+> sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
 
 #### Jawaban
 Jalankan command berikut pada node worker laravel:
@@ -1080,3 +1080,9 @@ pm.process_idle_timeout = 8s
 ```
 
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/99a17d70-c37b-4be4-a8af-7fbc10115a72)
+
+
+## Soal 20
+> Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
+
+#### Jawaban
