@@ -441,3 +441,336 @@ Berikut merupakan hasil dari jumlah request yang diterima oleh setiap worker:
 #### d. Analisis 
 
 #### Jawaban
+a. Round Robin
+```
+upstream round{
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+
+b. Weighted Round Robin
+```
+upstream round{
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+
+c. Least Connection
+```
+upstream least{
+	least_conn;
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+
+d. IP Hash
+```
+upstream least{
+	ip_hash;
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+
+e. Generic Hash
+```
+upstream least{
+	hash $request_uri consistent;
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+Untuk lanjutan code di setiap fiturnya adalah sebagai berikut:
+```
+server {
+	listen 80;
+	server_name granz.channel.A02.com;
+		location / {
+                proxy_pass http://robin;
+                proxy_set_header    X-Real-IP $remote_addr;
+                proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header    Host $http_host;
+        }
+	error_log /var/log/nginx/lb_error.log;
+access_log /var/log/nginx/lb_access.log;
+}
+```
+
+Dikarenakan screenshot benchmark dan htop terlalu banyak, maka dapat diakses pada link ini https://its.id/m/A02_Grimoire_Jarkom3_2023
+
+Berikut merupakan grafik perbandingan dari 5 algoritma tersebut:
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/1e5af5b3-7a22-4fbf-9a33-0b4cc65ebf5a)
+
+
+## Soal 9
+### Dengan menggunakan algoritma Round Robin, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 100 request dengan 10 request/second, kemudian tambahkan grafiknya pada grimoire.
+
+#### Jawaban
+Berikut merupakan code algoritma round robin:
+a. 3 Worker
+```
+upstream robin {
+	server 10.0.3.1;
+	server 10.0.3.2;
+	server 10.0.3.3;
+}
+```
+
+b. 2 Worker
+```
+upstream robin {
+	server 10.0.3.1;
+	server 10.0.3.2;
+}
+```
+
+c. 1 worker
+```
+upstream robin {
+	server 10.0.3.1;
+}
+```
+
+Untuk lanjutan code di setiap fiturnya adalah sebagai berikut:
+```
+server {
+	listen 80;
+	server_name granz.channel.A02.com;
+		location / {
+                proxy_pass http://robin;
+                proxy_set_header    X-Real-IP $remote_addr;
+                proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header    Host $http_host;
+        }
+	error_log /var/log/nginx/lb_error.log;
+access_log /var/log/nginx/lb_access.log;
+}
+```
+
+Dikarenakan algo tersebut disimpan dalam file, maka diperlukan symlink dengan file `/etc/nginx/sites-enabled/default` dan melakukan service nginx. Command yang diperlukan adalah sebagai berikut:
+```
+unlink /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/[nama-file] /etc/nginx/sites-enabled/default
+service nginx restart
+```
+
+Dikarenakan screenshot benchmark dan htop terlalu banyak, maka dapat diakses pada link ini https://its.id/m/A02_Grimoire_Jarkom3_2023
+
+Berikut merupakan grafik perbandingan dari semua code dengan jumlah workernya masing-masing:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/0baca76f-e713-4f8f-93b4-2948c4765bcf)
+
+
+## Soal 10
+### Selanjutnya coba tambahkan konfigurasi autentikasi di LB dengan dengan kombinasi username: “netics” dan password: “ajkyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/rahasisakita/
+
+#### Jawaban
+Untuk menambahkan konfigurasi autentikasi, maka perlu dijalankan command berikut dalam load balancer
+```
+mkdir /etc/nginx/rahasiakita
+htpasswd -c /etc/nginx/rahasiakita/.htpasswd netics
+Pass: ajka02
+```
+
+Pada soal ini, digunakan algoritma round robin weighted dengan command berikut:
+```
+echo 'upstream weighted {
+    server 10.0.3.1 weight=4;
+    server 10.0.3.2 weight=2;
+    server 10.0.3.3 weight=1;
+}
+
+server {
+    listen 80;
+    server_name granz.channel.A02.com;
+
+    location / {
+        proxy_pass http://weighted;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+
+        auth_basic "Administrator'\''s Area";
+        auth_basic_user_file /etc/nginx/etc/nginx/rahasiakita/.htpasswd;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    error_log /var/log/nginx/lb_error.log;
+    access_log /var/log/nginx/lb_access.log;
+}' > /etc/nginx/sites-available/lb-jarkom
+
+unlink /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/lb-jarkom /etc/nginx/sites-enabled/default
+service nginx restart
+```
+
+Pada node client, dijalankan command berikut untuk mengirimkan request dengan autentikasi
+```
+ab -A netics:ajka02 -n 100 -c 100 http://granz.channel.a02.com/
+```
+
+Hasilnya adalah sebagai berikut:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/d5aac31d-74d4-405d-90dd-4dc46786d87d)
+
+
+## Soal 11
+### Lalu buat untuk setiap request yang mengandung /its akan di proxy passing menuju halaman https://www.its.ac.id.
+
+#### Jawaban
+Tambahkan code berikut pada soal no. 10:
+```
+location /its {
+        proxy_pass https://www.its.ac.id;
+    
+	auth_basic "Administrator'\''s Area";
+        auth_basic_user_file /etc/nginx/rahasiakita/.htpasswd;
+}
+```
+Keterangan: Jika IP LB diakses dengan tambahan endpoint `/its`, maka akan menghubungkan ke `https://www.its.ac.id` dengan autentikasi.
+
+Hasil:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/12e1a6d5-20b0-4e21-ad75-60be46f87183)
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/7e8f3db0-6bc3-4e64-a600-41d4c2c9f90e)
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/df2d2f16-ef92-4e7d-adef-c8d87a2cc467)
+
+
+## Soal 12
+### Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].3.69, [Prefix IP].3.70, [Prefix IP].4.167, dan [Prefix IP].4.168.
+
+#### Jawaban
+Code berikut digunakan untuk memberikan batasan dengan IP apa saja client dapat mengakses
+```
+ location / {
+allow 10.0.3.69;
+        allow 10.0.3.70;
+        allow 10.0.4.167;
+        allow 10.0.4.168;
+	deny all;
+
+        proxy_pass http://weighted;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+
+        auth_basic "Administrator'\''s Area";
+        auth_basic_user_file /etc/nginx/rahasiakita/.htpasswd;
+    }
+```
+
+Hasil jika diakses oleh IP yang tidak didefinisikan dalam soal:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/b0767954-25fd-4135-a27a-413ac63dc6bf)
+
+## Soal 13
+### Semua data yang diperlukan, diatur pada Denken dan harus dapat diakses oleh Frieren, Flamme, dan Fern
+
+#### Jawaban
+##### Pada Denken
+Install dependensi dan atur database pada node database dengan command berikut:
+```
+apt-get install mariadb-server -y
+service mysql start
+echo ‘
+[mysqld]
+skip-networking=0
+skip-bind-address
+‘ > /etc/mysql/my.cnf
+
+mysql -u root -p
+
+CREATE USER 'kelompoka02'@'10.0.4.1' IDENTIFIED BY 'passworda02';
+CREATE USER 'kelompoka02'@'10.0.4.2' IDENTIFIED BY 'passworda02';
+CREATE USER 'kelompoka02'@'10.0.4.3' IDENTIFIED BY 'passworda02';
+CREATE USER 'kelompoka02'@'localhost' IDENTIFIED BY 'passworda02';
+CREATE DATABASE dbkelompoka02;
+
+GRANT ALL PRIVILEGES ON *.* TO 'kelompoka02'@'10.0.4.1';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompoka02'@'10.0.4.2';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompoka02'@'10.0.4.3';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompoka02'@'localhost';
+
+FLUSH PRIVILEGES;
+```
+
+Lalu, atur `bind address` pada `/etc/mysql/mariadb.conf.d/50-server.cnf` menjadi
+```
+bind addres = 0.0.0.0
+```
+
+##### Pada Worker
+Install dependensi pada node worker dengan command sebagai berikut:
+```
+apt update
+apt-get install mariadb-client -y
+```
+
+Jalankan command berikut untuk menghubungkan dengan database
+```
+mariadb --host=10.0.2.2 --port=3306 --user=kelompoka02 --password
+```
+Keterangan
+- IP yang terdapat pada host merupakan IP Denken
+- Port 3306 merupakan port untuk Mariadb
+- User berisikan nama user yang terdaftar dalam sql
+
+Hasil jika diakses oleh IP yang tidak diberikan akses:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/52a653d7-3040-4e51-8b4c-f26bdf2a381c)
+
+Hasil jika diakses oleh IP yang diberikan akses:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/403acbae-2615-4de6-97f8-2878e8e67ac5)
+
+
+## Soal 14
+### Frieren, Flamme, dan Fern memiliki Riegel Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
+
+#### Jawaban
+
+Lakukan instalasi dependensi berikut pada semua node worker:
+```
+apt-get update
+apt-get install -y lsb-release ca-certificates apt-transport-https
+software-properties-common gnupg2
+curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+apt-get update
+apt-get install php8.0-mbstring php8.0-xml php8.0-cli php8.0-common php8.0-intl php8.0-opcache php8.0-readline php8.0-mysql php8.0-fpm php8.0-curl unzip wget -y
+apt-get install nginx -y
+wget https://getcomposer.org/download/2.0.13/composer.phar
+chmod +x composer.phar
+mv composer.phar /usr/bin/composer
+apt-get install git -y
+git clone https://github.com/martuafernando/laravel-praktikum-jarkom
+mv laravel-praktikum-jarkom /var/www/
+```
+
+Jalankan command berikut pada file laravel:
+```
+Composer update
+composer install
+cp .env.example .env
+php artisan migrate:fresh
+php artisan db:seed --class=AiringsTableSeeder
+php artisan key:generate
+php artisan jwt:secret
+```
+
+Konfigurasi file .env yang baru:
+```
+```
