@@ -14,6 +14,10 @@
     </tr>
 </table>
 
+Link Grimoire: https://its.id/m/A02_Grimoire_Jarkom3_2023
+
+Link GNS3: https://its.id/m/A02_GNS3_Jarkom3_2023
+
 ## Topologi
 
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/47142ec0-68d7-48fa-aa5d-436f0600a92e)
