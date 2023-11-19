@@ -23,7 +23,7 @@
 
 Dikarenakan node yang akan digunakan mempunyai aturan seperti berikut:
 
-![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/f04f13fd-906a-4279-aa71-e7065cdb168d)
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/e1af9b57-60d5-4a29-b4f4-82efb98cc8cf)
 
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/bb079e98-9547-4822-a276-29e37e92bc3b)
 
@@ -301,6 +301,12 @@ service isc-dhcp-relay start
 ```
 
 Hasil:
+
+1. IP dhcp pada client dengan switch 3
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/5560ce74-4d7a-47be-b45d-8beb2687eefa)
+
+2. IP dhcp pada client dengan switch 4
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/74ee465b-aa89-44ce-af6b-76fea822095b)
 
 
 
