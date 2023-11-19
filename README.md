@@ -381,3 +381,63 @@ Hasil:
 #### aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second
 
 #### Jawaban
+Dikarenakan pada soal ini, terdapat informasi mengenai memori ataupun cpu pada setiap workernya. Maka, algoritma yang baik dalam melakukan request testing adalah round robin weighted, dengan setiap nodenya akan memiliki weight yang berbeda tergantung dengan informasi perfomance featurenya. Dikarenakan untuk menjalankan algoritma round robin memerlukan load balancer, maka diperlukan instalasi dependencies pada load balancer
+```
+apt update
+apt install nginx -y
+service nginx start
+```
+
+Setelah itu, membuat algoritma round robin weighted dalam load balancer
+```
+echo ‘upstream weighted {
+	server 10.0.3.1 weight=4;
+	server 10.0.3.2 weight=2;
+	server 10.0.3.3 weight=1;
+}
+
+server {
+	listen 80;
+	server_name granz.channel.A02.com;
+		location / {
+                proxy_pass http://weighted;
+                proxy_set_header    X-Real-IP $remote_addr;
+                proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header    Host $http_host;
+        }
+	error_log /var/log/nginx/lb_error.log;
+access_log /var/log/nginx/lb_access.log;
+}’ > /etc/nginx/sites-available/lb-jarkom
+```
+Keterangan: pada algoritma tersebut dapat dilihat bahwa pada setiap ip workernya, terdapat penulisan weight masing-masing.
+
+Dikarenakan algo tersebut disimpan dalam file `/etc/nginx/sites-available/lb-jarkom`, maka diperlukan symlink dengan file `/etc/nginx/sites-enabled/default`. Command yang diperlukan adalah sebagai berikut:
+```
+unlink /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/lb-jarkom /etc/nginx/sites-enabled/default
+service nginx restart
+```
+
+Untuk melakukan request testing, kita dapat berpindah ke node client dan menjalankan command apache benchmark ke load balancer:
+```
+ab -n 1000 -c 100 http://10.0.2.3/
+```
+
+Setelah itu, kita dapat melihat hasil dari testing request yang dikerjakan oleh setiap node worker dengan menjalankan command berikut:
+```
+cat /var/log/nginx/access.log | grep “GET” | wc -l
+```
+
+Berikut merupakan hasil dari jumlah request yang diterima oleh setiap worker:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/51092999-00c5-424a-9c1e-e0f5ffb5fc01)
+
+
+## Soal 8
+### Karena diminta untuk menuliskan grimoire, buatlah analisis hasil testing dengan 200 request dan 10 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+#### a. Nama Algoritma Load Balancer
+#### b. Report hasil testing pada Apache Benchmark
+#### c. Grafik request per second untuk masing masing algoritma. 
+#### d. Analisis 
+
+#### Jawaban
