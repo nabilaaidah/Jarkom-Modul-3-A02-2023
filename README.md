@@ -1101,3 +1101,20 @@ pm.process_idle_timeout = 8s
 > Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Eisen. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
 
 #### Jawaban
+Untuk mengerjakan nomor ini, maka konfigurasi pada load balancer dapat diubah sebagai berikut:
+```
+upstream laravel {
+    least_conn;
+    server 10.0.4.1;
+    server 10.0.4.2;
+    server 10.0.4.3;
+}
+```
+
+Berikut merupakan hasilnya:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/59519210-aede-426a-916c-a5fe426617db)
+
+
+## Kendala:
+- Ada beberapa soal yang direvisi sehingga menghambat pengerjaan
