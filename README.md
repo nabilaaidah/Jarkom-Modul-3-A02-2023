@@ -914,7 +914,7 @@ curl -X POST -d '{"username": "username", "password": "password"}' -H "Content-T
 ```
 Hasil:
 
-![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/35ea5a19-5077-4765-aa8d-2c130b655e8b)
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/f7966d3f-8ddc-410c-ba5e-e7a16a9861a7)
 
 
 ```
@@ -960,3 +960,123 @@ Hasil:
 
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/492c6c91-079b-4e86-aff7-813137a7dd7e)
 
+
+## Soal 18
+### Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur Riegel Channel maka implementasikan Proxy Bind pada Eisen untuk mengaitkan IP dari Frieren, Flamme, dan Fern.
+
+#### Jawaban
+Pada soal ini, diperintahkan untuk menggunakan Proxy Bind pada Eisen dalam mengaitkan IP Worker Laravel dengan IP Load Balancer, sehingga ditambahkan code ini:
+```
+ location /frieren {
+        proxy_bind 10.0.2.3;	
+        proxy_pass http://10.0.4.1/index.php;
+ 
+    }
+
+    location /flamme {
+	proxy_bind 10.0.2.3;
+        proxy_pass http://10.0.4.2/index.php;
+       
+    }
+
+    location /fern {
+	proxy_bind 10.0.2.3;
+        proxy_pass http://10.0.4.3/index.php;
+	}
+```
+
+Lalu, lakukan `service nginx restart`
+
+Hasil dapat dilihat pada client dengan command `lynx http://[ip lb]/[nama node worker laravel]/`. Berikut merupakan hasilnya:
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/e55c8bd5-c040-4b72-bf08-60b00b689745)
+
+
+## Soal 19
+### Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Frieren, Flamme, dan Fern. Untuk testing kinerja naikkan 
+#### - pm.max_children
+#### - pm.start_servers
+#### - pm.min_spare_servers
+#### - pm.max_spare_servers
+### sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada Grimoire.
+
+#### Jawaban
+Jalankan command berikut pada node worker laravel:
+```
+echo ‘
+user = eisen_user
+group = eisen_user
+listen = /var/run/php8.0-fpm-eisen-site.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+pm = dynamic
+pm.max_children = 75
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20
+pm.process_idle_timeout = 10s’ > /etc/php/8.0/fpm/pool.d/eisen.conf
+
+groupadd eisen_user
+useradd -g eisen_user eisen_user
+```
+
+Lalu, ubah konfigurasi socket php-fpm menjadi seperti berikut:
+```
+location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+        #
+        #       # With php-fpm (or other unix sockets):
+                fastcgi_pass unix:/var/run/php8.0-fpm-eisen-site.sock;
+        #       # With php-cgi (or other tcp sockets):
+        #       fastcgi_pass 127.0.0.1:9000;
+}
+```
+
+Setelah itu, jalankan command service berikut:
+```
+service php8.0-fpm start
+service nginx restart
+```
+
+Dikarenakan terdapat perintah untuk membuat 3 konfigurasi berbeda, maka terdapat 3 hasil untuk nomor ini:
+
+1. Hasil 1
+```
+pm = dynamic
+pm.max_children = 75
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20
+pm.process_idle_timeout = 10s
+```
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/0a41bf5b-678d-4e6c-a41b-fa1977185bba)
+
+
+2. Hasil 2
+```
+pm = dynamic
+pm.max_children = 35
+pm.start_servers = 5
+pm.min_spare_servers = 1
+pm.max_spare_servers = 5
+pm.process_idle_timeout = 6s
+```
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/6ef2619a-9252-4851-be89-8a9b8d5c761f)
+
+
+3. Hasil 3
+```
+pm = dynamic
+pm.max_children = 45
+pm.start_servers = 2
+pm.min_spare_servers = 3
+pm.max_spare_servers = 15
+pm.process_idle_timeout = 8s
+```
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/99a17d70-c37b-4be4-a8af-7fbc10115a72)
