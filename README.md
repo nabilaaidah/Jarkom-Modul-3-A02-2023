@@ -371,3 +371,13 @@ lynx granz.channel.a02.com
 
 Hasil:
 ![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/765eb2ac-f5a0-49ca-a9cb-9baa05184956)
+
+
+## Soal 7
+### Kepala suku dari Bredt Region memberikan resource server sebagai berikut:
+#### a. Lawine, 4GB, 2vCPU, dan 80 GB SSD.
+#### b. Linie, 2GB, 2vCPU, dan 50 GB SSD.
+#### c. Lugner 1GB, 1vCPU, dan 25 GB SSD.
+#### aturlah agar Eisen dapat bekerja dengan maksimal, lalu lakukan testing dengan 1000 request dan 100 request/second
+
+#### Jawaban
