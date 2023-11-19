@@ -520,7 +520,9 @@ access_log /var/log/nginx/lb_access.log;
 Dikarenakan screenshot benchmark dan htop terlalu banyak, maka dapat diakses pada link ini https://its.id/m/A02_Grimoire_Jarkom3_2023
 
 Berikut merupakan grafik perbandingan dari 5 algoritma tersebut:
-![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/1e5af5b3-7a22-4fbf-9a33-0b4cc65ebf5a)
+
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/aa135d26-a988-4125-896f-d29063619dc6)
+
 
 
 ## Soal 9
