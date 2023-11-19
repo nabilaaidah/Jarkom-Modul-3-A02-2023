@@ -93,6 +93,34 @@ auto eth0
 iface eth0 inet dhcp
 ```
 
+Dikarenakan terdaapat petulisan bahwa worker memiliki IP yang static, maka semua worker diberikan fixed address
+```
+echo ‘
+host Lawine{
+	hardware ethernet 7e:58:d8:55:f1:8e;
+	fixed-address 10.0.3.1;
+}
+host Linie{
+	hardware ethernet 6a:a0:56:8d:35:a8;
+	fixed-address 10.0.3.2;
+}
+host Lugner{
+	hardware ethernet b2:8e:86:ed:a6:94;
+	fixed-address 10.0.3.3;
+}
+host Frieren{
+	hardware ethernet 6e:16:c8:77:a5:6c;
+	fixed-address 10.0.4.1;
+}
+host Flamme{
+	hardware ethernet 5a:90:d0:d2:35:d5;
+	fixed-address 10.0.4.2;
+}
+host Fern{
+	hardware ethernet 56:17:50:e0:92:fc;
+	fixed-address 10.0.4.3;
+}’ >> /etc/dhcp/dhcpd.conf
+```
 
 ## Soal 0
 ### Setelah mengalahkan Demon King, perjalanan berlanjut. Kali ini, kalian diminta untuk melakukan register domain berupa riegel.canyon.yyy.com untuk worker Laravel dan granz.channel.yyy.com untuk worker PHP (0) mengarah pada worker yang memiliki IP [prefix IP].x.1.
@@ -252,6 +280,28 @@ max-lease-time 5760;
 ```
 
 Keterangan: semua waktu dideifinisikan menggunakan detik
+
+Untuk melihat apakah ip dhcp terimplementasikan pada client, maka perlu dilakukan konfigurasi pada dhcp relay:
+```
+apt update
+apt install isc-dhcp-relay -y
+```
+Dengan konfigurasi tambahan sebagai berikut:
+```
+SERVERS="10.0.1.1" # IP Dhcp sever
+INTERFACES="eth1 eth2 eth3 eth4”
+```
+Dan melakukan enable ip4 forwarding pada `/etc/sysctl.conf`
+```
+net.ipv4.ip_forward=1
+```
+Setelah itu melakukan start service dengan command berikut:
+```
+service isc-dhcp-relay start
+```
+
+Hasil:
+
 
 
 ## Soal 6
