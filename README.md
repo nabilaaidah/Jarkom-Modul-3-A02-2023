@@ -282,9 +282,13 @@ mv JarkomPrak3-Dependencies /var/www/html/granz.channel.a02.com
 ```
 
 4. Lakukan sedikit editorial pada file `/etc/nginx/sites-enabled/default` yang ada pada PHP worker
+
 a. Jadikan root `/var/www/html` menjadi `/var/www/html/granz.channel.a02.com`
+
 b. Tambahkan `index.php` dalam index
+
 c. Ganti `server-name _` menjadi `server-name granz.channel.a02.com`
+
 d. Lakukan uncomment pada beberapa code:
 ```
 location ~ \.php$ {
