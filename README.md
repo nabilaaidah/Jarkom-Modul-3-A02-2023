@@ -228,7 +228,7 @@ subnet 10.0.4.0 netmask 255.255.255.0 {
 	max-lease-time 5760;
 }
 ```
-Keterangan: Dikarenakan terdapat dua range IP yang diminta, sehingga range ditulis dua kali.
+Keterangan: Dikarenakan terdapat dua range IP yang diminta, sehingga range ditulis dua kali. Subnet-subnet ini ditulis ke dalam file `/etc/dhcp/dhcpd.conf`
 
 d. Client mendapatkan DNS dari Heiter dan dapat terhubung dengan internet melalui DNS tersebut
 ```
@@ -252,3 +252,60 @@ max-lease-time 5760;
 ```
 
 Keterangan: semua waktu dideifinisikan menggunakan detik
+
+
+## Soal 6
+### Pada masing-masing worker PHP, lakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
+
+#### Jawaban
+1. Melakukan instalasi dependencies yang dibutuhkan pada PHP worker
+```
+apt update
+apt install nginx -y
+service nginx start
+apt-get install php php-fpm -y
+```
+
+2. Melakukan instalasi dependencies yang dibutuhkan pada client
+```
+apt update
+apt install lynx -y
+apt install htop -y
+apt install apache2-utils -y
+apt install nginx -y
+```
+
+3. Pada PHP worker, buat file di dalam root yang akan menginstalasi hal yang dibutuhkan sesuai yang telah didefinisikan dalam soal. Lalu, pindahkan ke file directory yang diinginkan
+```
+git clone -b granz https://github.com/nabilaaidah/JarkomPrak3-Dependencies
+mv JarkomPrak3-Dependencies /var/www/html/granz.channel.a02.com
+```
+
+4. Lakukan sedikit editorial pada file `/etc/nginx/sites-enabled/default` yang ada pada PHP worker
+a. Jadikan root `/var/www/html` menjadi `/var/www/html/granz.channel.a02.com`
+b. Tambahkan `index.php` dalam index
+c. Ganti `server-name _` menjadi `server-name granz.channel.a02.com`
+d. Lakukan uncomment pada beberapa code:
+```
+location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+#
+#   # With php-fpm (or other unix sockets):
+    fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+#   # With php-cgi (or other tcp sockets):
+#   fastcgi_pass 127.0.0.1:9000;
+}
+```
+e. Lakukan restart nginx dan start php
+```
+service nginx restart
+service php7.3-fpm start
+```
+
+5. Jalankan command berikut pada client untuk melihat hasilnya
+```
+lynx granz.channel.a02.com
+```
+
+Hasil:
+![image](https://github.com/nabilaaidah/Jarkom-Modul-3-A02-2023/assets/110476969/765eb2ac-f5a0-49ca-a9cb-9baa05184956)
